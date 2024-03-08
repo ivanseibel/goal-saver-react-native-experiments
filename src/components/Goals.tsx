@@ -12,8 +12,8 @@ type ComponentProps = {
 export const Goals = ({ goals, onPress, onAdd }: ComponentProps) => {
 	return (
 		<ScrollView
-			className="mt-11"
-			contentContainerClassName="h-[164px] gap-4"
+			className="mt-11 -mr-8"
+			contentContainerClassName="h-[164px] gap-4 pr-8"
 			horizontal
 			showsHorizontalScrollIndicator={false}
 		>
