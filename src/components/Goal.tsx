@@ -1,5 +1,6 @@
 import { TouchableOpacity, TouchableOpacityProps, Text } from "react-native";
 import { currencyFormat } from "../utils/currencyFormat";
+import { ProgressBar } from "./ProgressBar";
 
 type ComponentProps = TouchableOpacityProps & {
 	goal: GoalDTO;
@@ -19,6 +20,8 @@ export const Goal = ({ goal, ...props }: ComponentProps) => {
 			<Text className="text-gray-300 font-regular text-sm flex-1">
 				of {currencyFormat(goal.total)}
 			</Text>
+
+			<ProgressBar percentage={(goal.current / goal.total) * 100} />
 		</TouchableOpacity>
 	);
 };
