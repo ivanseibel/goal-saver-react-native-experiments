@@ -1,6 +1,7 @@
 import { colors } from "@/styles/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native";
+import { Goal } from "./Goal";
 
 type ComponentProps = {
 	goals: GoalDTO[];
@@ -10,7 +11,12 @@ type ComponentProps = {
 
 export const Goals = ({ goals, onPress, onAdd }: ComponentProps) => {
 	return (
-		<ScrollView className="mt-11" contentContainerClassName="h-[164px] gap-4">
+		<ScrollView
+			className="mt-11"
+			contentContainerClassName="h-[164px] gap-4"
+			horizontal
+			showsHorizontalScrollIndicator={false}
+		>
 			{/* Add button */}
 			<TouchableOpacity
 				activeOpacity={0.7}
@@ -19,6 +25,11 @@ export const Goals = ({ goals, onPress, onAdd }: ComponentProps) => {
 			>
 				<MaterialIcons name="add" size={36} color={colors.black} />
 			</TouchableOpacity>
+
+			{/* Goals */}
+			{goals.map((goal) => (
+				<Goal key={goal.id} goal={goal} onPress={() => onPress(goal.id)} />
+			))}
 		</ScrollView>
 	);
 };
