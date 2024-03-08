@@ -1,9 +1,10 @@
+import { Header } from "@/components/Header";
 import { Text, View } from "react-native";
 
 const Index = () => {
 	return (
-		<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-			<Text className="font-bold text-2xl">Hello World</Text>
+		<View className="flex-1 bg-gray-600 py-9 px-8">
+			<Header title="Goal Saver" subtitle="Save today, enjoy tomorrow." />
 		</View>
 	);
 };
