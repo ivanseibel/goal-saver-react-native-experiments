@@ -1,3 +1,4 @@
+import "@/libs/dayjs";
 import "@/styles/global.css";
 
 import { Slot, SplashScreen } from "expo-router";
