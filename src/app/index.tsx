@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { mocks } from "@/utils/mocks";
+import { Transactions } from "@/components/Transactions";
 
 const Index = () => {
 	const [goals, setGoals] = useState<GoalDTO[]>([]);
@@ -25,6 +26,8 @@ const Index = () => {
 			<Header title="Goal Saver" subtitle="Save today, enjoy tomorrow." />
 
 			<Goals goals={goals} onPress={() => {}} onAdd={() => {}} />
+
+			<Transactions transactions={mocks.transactions} />
 		</View>
 	);
 };
