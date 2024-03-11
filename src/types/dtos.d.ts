@@ -9,5 +9,5 @@ type TransactionDTO = {
 	id: string;
 	amount: number;
 	goal_id: number;
-	created_at: number;
+	created_at: string;
 };
