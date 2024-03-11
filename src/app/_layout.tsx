@@ -13,6 +13,7 @@ import {
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "@/styles/colors";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,10 +34,12 @@ const Layout = () => {
 	} else return null;
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: colors.gray[600] }}>
-			<StatusBar style="light" />
-			<Slot />
-		</SafeAreaView>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<SafeAreaView style={{ flex: 1, backgroundColor: colors.gray[600] }}>
+				<StatusBar style="light" />
+				<Slot />
+			</SafeAreaView>
+		</GestureHandlerRootView>
 	);
 };
 
