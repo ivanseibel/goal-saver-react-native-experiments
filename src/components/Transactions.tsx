@@ -9,14 +9,18 @@ type ComponentProps = {
 
 export const Transactions = ({ transactions }: ComponentProps) => {
 	return (
-		<View>
+		<View className="flex-1">
 			<Text className="text-white text-base font-semiBold mt-8 mb-3">
 				Last transactions
 			</Text>
 
 			<View className="divider bg-gray-400 h-[1px] mb-6 w-full" />
 
-			<ScrollView contentContainerClassName="gap-2">
+			<ScrollView
+				contentContainerClassName="gap-2"
+				showsVerticalScrollIndicator={false}
+				className=""
+			>
 				{transactions.map((transaction) => (
 					<Transaction key={transaction.id} {...transaction} />
 				))}
