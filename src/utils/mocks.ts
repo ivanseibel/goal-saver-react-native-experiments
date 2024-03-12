@@ -11,6 +11,66 @@ const transactions = [
 		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
 		amount: -90,
 	},
+	{
+		id: "3",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: 50,
+	},
+	{
+		id: "4",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: -30,
+	},
+	{
+		id: "5",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: 100,
+	},
+	{
+		id: "6",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: -90,
+	},
+	{
+		id: "7",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: 50,
+	},
+	{
+		id: "8",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: -30,
+	},
+	{
+		id: "9",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: 100,
+	},
+	{
+		id: "10",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: -90,
+	},
+	{
+		id: "11",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: 50,
+	},
+	{
+		id: "12",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: -30,
+	},
+	{
+		id: "13",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: 100,
+	},
+	{
+		id: "14",
+		created_at: dayjs(new Date()).format("DD/MM/YYYY [at] HH:mm"),
+		amount: -90,
+	},
 ];
 
 const goal = {
