@@ -7,13 +7,21 @@ import { Transactions } from "@/components/Transactions";
 import { BottomSheet } from "@/components/BottomSheet";
 import BottomSheetComponent from "@gorhom/bottom-sheet";
 import { Input } from "@/components/Input";
+import { Button } from "@/components/Button";
+import { router } from "expo-router";
 
 const Index = () => {
+	const [goalName, setGoalName] = useState("");
+	const [goalAmount, setGoalAmount] = useState("");
 	const [goals, setGoals] = useState<GoalDTO[]>([]);
-	const bottomSheetRef = useRef<BottomSheetComponent>(null);
 
+	const bottomSheetRef = useRef<BottomSheetComponent>(null);
 	const handleBottomSheetOpen = () => bottomSheetRef.current?.expand();
 	const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
+
+	const handleDetails = (id: string) => {
+		router.navigate(`/details/${id}`);
+	};
 
 	useEffect(() => {
 		const fetchGoals = async () => {
@@ -30,23 +38,37 @@ const Index = () => {
 
 	return (
 		<>
-			<View className="flex-1 bg-gray-600 py-9 px-8">
+			<View className="flex-1 bg-gray-600 pt-9 pb-4 px-8">
 				<Header title="Goal Saver" subtitle="Save today, enjoy tomorrow." />
 
-				<Goals goals={goals} onPress={() => {}} onAdd={handleBottomSheetOpen} />
+				<Goals
+					goals={goals}
+					onPress={handleDetails}
+					onAdd={handleBottomSheetOpen}
+				/>
 
 				<Transactions transactions={mocks.transactions} />
 			</View>
 			<BottomSheet
 				ref={bottomSheetRef}
 				title="New Goal"
-				snapPoints={[0.01, 284]}
+				snapPoints={[0.001, 284]}
 				onClose={handleBottomSheetClose}
 			>
 				<View>
 					<View className="gap-4">
-						<Input placeholder="Goal name" />
-						<Input placeholder="Amount" />
+						<Input
+							placeholder="Goal name"
+							onChangeText={(text) => setGoalName(text)}
+							value={goalName}
+						/>
+						<Input
+							placeholder="Amount"
+							onChangeText={(text) => setGoalAmount(text)}
+							value={goalAmount}
+						/>
+
+						<Button label="Create" />
 					</View>
 				</View>
 			</BottomSheet>
