@@ -2,7 +2,7 @@ import { colors } from "@/styles/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import BottomSheetComponent from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 
 type ComponentProps = {
 	onClose: () => void;
@@ -13,11 +13,14 @@ type ComponentProps = {
 
 export const BottomSheet = forwardRef<BottomSheetComponent, ComponentProps>(
 	({ onClose, title, children, snapPoints }, ref) => {
+		const crosPlatformSnapPoints =
+			Platform.OS === "ios" ? [snapPoints[0], snapPoints[1] + 24] : snapPoints;
+
 		return (
 			<BottomSheetComponent
 				ref={ref}
 				index={0}
-				snapPoints={snapPoints}
+				snapPoints={crosPlatformSnapPoints}
 				handleComponent={() => null}
 				backgroundStyle={{
 					borderWidth: 1,
