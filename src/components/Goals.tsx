@@ -1,6 +1,6 @@
 import { colors } from "@/styles/colors";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity, Text, View } from "react-native";
 import { Goal } from "./Goal";
 
 type ComponentProps = {
@@ -25,6 +25,14 @@ export const Goals = ({ goals, onPress, onAdd }: ComponentProps) => {
 			>
 				<MaterialIcons name="add" size={36} color={colors.black} />
 			</TouchableOpacity>
+
+			{goals.length === 0 && (
+				<View className="bg-gray-500 h-full w-40 rounded-lg p-4 justify-center items-center">
+					<Text className="text-white w-full self-start">
+						No goals yet. Click the + button to add one.
+					</Text>
+				</View>
+			)}
 
 			{/* Goals */}
 			{goals.map((goal) => (
