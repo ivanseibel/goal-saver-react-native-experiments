@@ -9,6 +9,7 @@ import BottomSheetComponent from "@gorhom/bottom-sheet";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { router } from "expo-router";
+import { useGoalRepository } from "@/storage/useGoalRepository";
 
 const Index = () => {
 	const [goalName, setGoalName] = useState("");
@@ -19,6 +20,8 @@ const Index = () => {
 	const handleBottomSheetOpen = () => bottomSheetRef.current?.expand();
 	const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
 
+	const { getGoals } = useGoalRepository();
+
 	const handleDetails = (id: string) => {
 		router.navigate(`/details/${id}`);
 	};
@@ -26,7 +29,7 @@ const Index = () => {
 	useEffect(() => {
 		const fetchGoals = async () => {
 			try {
-				const response = mocks.goals;
+				const response = getGoals();
 				setGoals(response);
 			} catch (error) {
 				console.log(error);
