@@ -8,9 +8,10 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { Transactions } from "@/components/Transactions";
 import { mocks } from "@/utils/mocks";
 import { useRef, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
+import { TransactionTypeSelector } from "@/components/TransactionTypeSelector";
 
 const Details = () => {
 	const [amount, setAmount] = useState("");
@@ -40,19 +41,18 @@ const Details = () => {
 			<BottomSheet
 				ref={bottomSheetRef}
 				title="New Goal"
-				snapPoints={[0.001, 200]}
+				snapPoints={[0.001, 260]}
 				onClose={handleBottomSheetClose}
 			>
-				<View>
-					<View className="gap-4">
-						<Input
-							placeholder="Amount"
-							onChangeText={(text) => setAmount(text)}
-							value={amount}
-						/>
+				<View className="gap-6">
+					<TransactionTypeSelector onTypeChange={() => {}} />
+					<Input
+						placeholder="Amount"
+						onChangeText={(text) => setAmount(text)}
+						value={amount}
+					/>
 
-						<Button label="Create" />
-					</View>
+					<Button label="Create" />
 				</View>
 			</BottomSheet>
 		</>
