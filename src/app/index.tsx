@@ -56,7 +56,7 @@ const Index = () => {
 				onClose={handleBottomSheetClose}
 			>
 				<View>
-					<View className="gap-4">
+					<View className="gap-6">
 						<Input
 							placeholder="Goal name"
 							onChangeText={(text) => setGoalName(text)}
