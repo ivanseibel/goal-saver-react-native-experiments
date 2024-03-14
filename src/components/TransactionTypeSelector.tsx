@@ -3,17 +3,22 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 
+type TransactionType = "deposit" | "withdrawal";
+
 interface ComponentProps {
-	onTypeChange: (type: "deposit" | "withdrawal") => void;
+	onTypeChange: (type: TransactionType) => void;
+	selectedType: TransactionType;
 }
 
-export const TransactionTypeSelector = ({ onTypeChange }: ComponentProps) => {
-	const [selectedType, setSelectedType] = useState<"deposit" | "withdrawal">(
-		"deposit",
-	);
+export const TransactionTypeSelector = ({
+	onTypeChange,
+	selectedType,
+}: ComponentProps) => {
+	// const [selectedType, setSelectedType] = useState<"deposit" | "withdrawal">(
+	// 	"deposit",
+	// );
 
 	const handleTypeChange = (type: "deposit" | "withdrawal") => {
-		setSelectedType(type);
 		onTypeChange(type);
 	};
 
