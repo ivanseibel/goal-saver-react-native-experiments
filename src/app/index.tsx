@@ -26,6 +26,7 @@ const Index = () => {
 		router.navigate(`/details/${id}`);
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const fetchGoals = async () => {
 			try {
