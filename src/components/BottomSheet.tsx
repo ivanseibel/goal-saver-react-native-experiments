@@ -1,8 +1,8 @@
 import { colors } from "@/styles/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import BottomSheetComponent from "@gorhom/bottom-sheet";
-import { forwardRef } from "react";
-import { View, Text, Platform } from "react-native";
+import { forwardRef, useEffect, useState } from "react";
+import { View, Text, Platform, Keyboard } from "react-native";
 
 type ComponentProps = {
 	onClose: () => void;
@@ -13,14 +13,44 @@ type ComponentProps = {
 
 export const BottomSheet = forwardRef<BottomSheetComponent, ComponentProps>(
 	({ onClose, title, children, snapPoints }, ref) => {
+		const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+		useEffect(() => {
+			const keyboardDidShowListener = Keyboard.addListener(
+				"keyboardDidShow",
+				(e) => {
+					setKeyboardHeight(e.endCoordinates.height);
+				},
+			);
+			const keyboardDidHideListener = Keyboard.addListener(
+				"keyboardDidHide",
+				() => {
+					setKeyboardHeight(0);
+				},
+			);
+
+			return () => {
+				keyboardDidShowListener.remove();
+				keyboardDidHideListener.remove();
+			};
+		}, []);
+
+		const handleOnClose = () => {
+			Keyboard.dismiss();
+			onClose();
+		};
+
 		const crosPlatformSnapPoints =
-			Platform.OS === "ios" ? [snapPoints[0], snapPoints[1] + 24] : snapPoints;
+			Platform.OS === "ios"
+				? [snapPoints[0], snapPoints[1] + 24 + keyboardHeight]
+				: snapPoints;
 
 		return (
 			<BottomSheetComponent
 				ref={ref}
 				index={0}
 				snapPoints={crosPlatformSnapPoints}
+				keyboardBehavior={undefined}
 				handleComponent={() => null}
 				backgroundStyle={{
 					borderWidth: 1,
@@ -38,7 +68,7 @@ export const BottomSheet = forwardRef<BottomSheetComponent, ComponentProps>(
 							name="close"
 							size={24}
 							color={colors.gray[300]}
-							onPress={onClose}
+							onPress={handleOnClose}
 						/>
 					</View>
 					{children}
