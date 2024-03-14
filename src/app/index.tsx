@@ -16,8 +16,8 @@ import { goalValidation } from "@/validations/goal.validation";
 import { useTransactionRepository } from "@/hooks/useTransactionRepository";
 
 const initialGoal = {
-	goalName: "",
-	goalAmount: "",
+	name: "",
+	amount: "",
 };
 
 const Index = () => {
@@ -56,7 +56,7 @@ const Index = () => {
 	const onSubmit = () => {
 		console.log("Form submitted", values);
 
-		createGoal(values.goalName, Number(values.goalAmount));
+		createGoal(values.name, Number(values.amount));
 
 		Keyboard.dismiss();
 		handleBottomSheetClose();
@@ -85,60 +85,36 @@ const Index = () => {
 			<BottomSheet
 				ref={bottomSheetRef}
 				title="New Goal"
-				snapPoints={[0.001, 280]}
+				snapPoints={[0.001, 400]}
 				onClose={handleBottomSheetClose}
 			>
 				<View>
 					<View className="gap-6">
-						{errors.goalName && (
-							<Text style={{ color: "red" }}>{errors.goalName}</Text>
-						)}
+						{errors.name && <Text style={{ color: "red" }}>{errors.name}</Text>}
 						<Input
 							placeholder="Goal name"
-							onChangeText={(text) => handleChange("goalName", text)}
+							onChangeText={(text) => handleChange("name", text)}
 							returnKeyType="done"
-							value={values.goalName}
+							value={values.name}
 						/>
 
-						{errors.goalAmount && (
-							<Text style={{ color: "red" }}>{errors.goalAmount}</Text>
+						{errors.amount && (
+							<Text style={{ color: "red" }}>{errors.amount}</Text>
 						)}
 						<Input
 							placeholder="Amount"
-							onChangeText={(text) => handleChange("goalAmount", text)}
+							onChangeText={(text) => handleChange("amount", text)}
 							keyboardType="decimal-pad"
 							returnKeyType="done"
-							value={values.goalAmount}
+							value={values.amount}
 						/>
 
 						<Button label="Create" onPress={() => handleSubmit(onSubmit)} />
 					</View>
 				</View>
 			</BottomSheet>
-			{/* <BottomSheet snapPoints={["40%"]}>
-				<View style={styles.contentContainer}>
-					<BottomSheetTextInput value="Awesome 🎉" style={styles.textInput} />
-				</View>
-			</BottomSheet> */}
 		</>
 	);
 };
-
-const styles = StyleSheet.create({
-	textInput: {
-		alignSelf: "stretch",
-		marginHorizontal: 12,
-		marginBottom: 12,
-		padding: 12,
-		borderRadius: 12,
-		backgroundColor: "grey",
-		color: "white",
-		textAlign: "center",
-	},
-	contentContainer: {
-		flex: 1,
-		alignItems: "center",
-	},
-});
 
 export default Index;
