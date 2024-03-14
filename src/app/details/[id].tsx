@@ -5,9 +5,8 @@ import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { ProgressBar } from "@/components/ProgressBar";
 import { Transactions } from "@/components/Transactions";
-import { mocks } from "@/utils/mocks";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
 import { TransactionTypeSelector } from "@/components/TransactionTypeSelector";
@@ -16,10 +15,12 @@ import type BottomSheetComponent from "@gorhom/bottom-sheet";
 import { useLocalSearchParams } from "expo-router";
 import { useGoalRepository } from "@/hooks/useGoalRepository";
 import { formatCurrencyCrossPlatform } from "@/utils/formatCurrency";
+import { useTransactionRepository } from "@/hooks/useTransactionRepository";
 
 const Details = () => {
 	const [amount, setAmount] = useState("");
 	const [goal, setGoal] = useState<GoalDTO | null>(null);
+	const [transactions, setTransactions] = useState<TransactionDTO[]>([]);
 
 	const routeParams = useLocalSearchParams();
 	const goalId = Number(routeParams.id);
@@ -29,10 +30,16 @@ const Details = () => {
 	const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
 
 	const { getGoal } = useGoalRepository();
+	const { createTransaction, getTransactions } = useTransactionRepository();
 
 	const fetchGoal = () => {
 		const response = getGoal(goalId.toString());
 		setGoal(response);
+	};
+
+	const fetchTransactions = () => {
+		const response = getTransactions(goalId);
+		setTransactions(response);
 	};
 
 	const subtitle = useMemo(() => {
@@ -52,6 +59,7 @@ const Details = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		fetchGoal();
+		fetchTransactions();
 	}, [goalId]);
 
 	return (
@@ -63,7 +71,7 @@ const Details = () => {
 
 				<ProgressBar percentage={percentage} />
 
-				<Transactions transactions={mocks.transactions} />
+				<Transactions transactions={transactions} />
 
 				<TouchableOpacity
 					className="absolute bottom-4 right-4 bg-green-500 rounded-full w-16 h-16 items-center justify-center"
