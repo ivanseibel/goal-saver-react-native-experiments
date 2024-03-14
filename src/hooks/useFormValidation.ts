@@ -22,6 +22,8 @@ export const useFormValidation = (
 	const validate = (): boolean => {
 		const validationErrors: FormErrors = {};
 		for (const key of Object.keys(values)) {
+			console.log("key", key);
+			console.log("values[key]", values[key]);
 			const validationFunc = validationFuncs[key];
 			if (validationFunc) {
 				const error = validationFunc(values[key]);
