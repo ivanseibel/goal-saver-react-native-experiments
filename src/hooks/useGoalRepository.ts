@@ -35,8 +35,10 @@ export function useGoalRepository() {
 				COALESCE(SUM(t.amount), 0) AS current
 			FROM goals AS g
 			LEFT JOIN transactions t ON t.goal_id = g.id
-			WHERE g.id = $id
-			GROUP BY g.id, g.name, g.total
+			WHERE 
+				g.id = $id
+			GROUP BY 
+				g.id, g.name, g.total
 		`);
 
 		const result = statement.executeSync<GoalDTO>({ $id: id });
