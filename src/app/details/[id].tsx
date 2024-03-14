@@ -1,6 +1,5 @@
 import { BackButton } from "@/components/BackButton";
 import { BottomSheet } from "@/components/BottomSheet";
-import BottomSheetComponent from "@gorhom/bottom-sheet";
 import { Button } from "@/components/Button";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
@@ -12,6 +11,8 @@ import { TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
 import { TransactionTypeSelector } from "@/components/TransactionTypeSelector";
+
+import type BottomSheetComponent from "@gorhom/bottom-sheet";
 
 const Details = () => {
 	const [amount, setAmount] = useState("");
