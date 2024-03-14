@@ -1,10 +1,10 @@
 export const goalValidation = {
-	goalName: (value: string) => {
+	name: (value: string) => {
 		if (!value.trim()) return "Goal name is required";
 		if (value.length < 3) return "Goal name must be at least 3 characters";
 		return null;
 	},
-	goalAmount: (value: string) => {
+	amount: (value: string) => {
 		const trimmedValue = value.trim();
 		const numericValue = Number.parseFloat(trimmedValue);
 
