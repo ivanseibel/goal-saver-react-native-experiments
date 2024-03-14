@@ -1,8 +1,9 @@
-import { TouchableOpacity, TouchableOpacityProps, Text } from "react-native";
 import {
-	formatCurrency,
-	formatCurrencyCrossPlatform,
-} from "../utils/formatCurrency";
+	TouchableOpacity,
+	type TouchableOpacityProps,
+	Text,
+} from "react-native";
+import { formatCurrencyCrossPlatform } from "../utils/formatCurrency";
 import { ProgressBar } from "./ProgressBar";
 
 type ComponentProps = TouchableOpacityProps & {
