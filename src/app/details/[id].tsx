@@ -6,7 +6,7 @@ import { Input } from "@/components/Input";
 import { ProgressBar } from "@/components/ProgressBar";
 import { Transactions } from "@/components/Transactions";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text, Keyboard } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
 import { TransactionTypeSelector } from "@/components/TransactionTypeSelector";
@@ -16,9 +16,17 @@ import { useLocalSearchParams } from "expo-router";
 import { useGoalRepository } from "@/hooks/useGoalRepository";
 import { formatCurrencyCrossPlatform } from "@/utils/formatCurrency";
 import { useTransactionRepository } from "@/hooks/useTransactionRepository";
+import { transactionValidation } from "@/validations/transaction.validation";
+import { useFormValidation } from "@/hooks/useFormValidation";
+
+type TransactionType = "deposit" | "withdrawal";
+
+const initialTransaction = {
+	amount: "",
+	type: "deposit",
+};
 
 const Details = () => {
-	const [amount, setAmount] = useState("");
 	const [goal, setGoal] = useState<GoalDTO | null>(null);
 	const [transactions, setTransactions] = useState<TransactionDTO[]>([]);
 
@@ -31,6 +39,11 @@ const Details = () => {
 
 	const { getGoal } = useGoalRepository();
 	const { createTransaction, getTransactions } = useTransactionRepository();
+
+	const { errors, handleChange, handleSubmit, values } = useFormValidation(
+		initialTransaction,
+		transactionValidation,
+	);
 
 	const fetchGoal = () => {
 		const response = getGoal(goalId.toString());
@@ -55,6 +68,20 @@ const Details = () => {
 
 		return (goal.current / goal.total) * 100;
 	}, [goal]);
+
+	const onSubmit = () => {
+		console.log("Form submitted", values);
+
+		createTransaction(
+			goalId,
+			Number(values.amount),
+			values.type as TransactionType,
+		);
+
+		Keyboard.dismiss();
+		handleBottomSheetClose();
+		fetchTransactions();
+	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -83,18 +110,26 @@ const Details = () => {
 			<BottomSheet
 				ref={bottomSheetRef}
 				title="New Goal"
-				snapPoints={[0.001, 260]}
+				snapPoints={[0.001, 320]}
 				onClose={handleBottomSheetClose}
 			>
 				<View className="gap-6">
-					<TransactionTypeSelector onTypeChange={() => {}} />
-					<Input
-						placeholder="Amount"
-						onChangeText={(text) => setAmount(text)}
-						value={amount}
+					{errors.type && <Text style={{ color: "red" }}>{errors.type}</Text>}
+					<TransactionTypeSelector
+						onTypeChange={(type) => handleChange("type", type)}
+						selectedType={values.type as TransactionType}
 					/>
 
-					<Button label="Create" />
+					{errors.amount && (
+						<Text style={{ color: "red" }}>{errors.amount}</Text>
+					)}
+					<Input
+						placeholder="Amount"
+						onChangeText={(text) => handleChange("amount", text)}
+						value={values.amount}
+					/>
+
+					<Button label="Create" onPress={() => handleSubmit(onSubmit)} />
 				</View>
 			</BottomSheet>
 		</>
