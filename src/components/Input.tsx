@@ -1,5 +1,8 @@
 import { colors } from "@/styles/colors";
-import { TextInput, TextInputProps } from "react-native";
+import type { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { TextInput, type TextInputProps } from "react-native";
+
+type ComponentProps = typeof BottomSheetTextInput;
 
 export const Input = (props: TextInputProps) => {
 	return (
