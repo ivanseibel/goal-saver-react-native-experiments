@@ -20,8 +20,6 @@ const initialGoal = {
 };
 
 const Index = () => {
-	const [goalName, setGoalName] = useState("");
-	const [goalAmount, setGoalAmount] = useState("");
 	const [goals, setGoals] = useState<GoalDTO[]>([]);
 
 	const bottomSheetRef = useRef<BottomSheetComponent>(null);
@@ -38,7 +36,7 @@ const Index = () => {
 		router.navigate(`/details/${id}`);
 	};
 
-	const fetchGoals = async () => {
+	const fetchGoals = () => {
 		try {
 			const response = getGoals();
 			setGoals(response);
