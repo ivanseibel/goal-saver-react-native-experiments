@@ -6,7 +6,7 @@ export function useTransactionRepository() {
 	const createTransaction = (
 		goalId: number,
 		amount: number,
-		type: "deposit" | "withdraw",
+		type: "deposit" | "withdrawal",
 	) => {
 		const statement = database.prepareSync(
 			"INSERT INTO transactions (goal_id, amount) VALUES ($goalId, $amount)",
@@ -14,7 +14,7 @@ export function useTransactionRepository() {
 
 		statement.executeSync({
 			$goalId: goalId,
-			$amount: type === "withdraw" ? amount * -1 : amount,
+			$amount: type === "withdrawal" ? amount * -1 : amount,
 			$type: type,
 		});
 	};
