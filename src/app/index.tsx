@@ -1,15 +1,16 @@
 import { Goals } from "@/components/Goals";
 import { Header } from "@/components/Header";
 import { useEffect, useRef, useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { mocks } from "@/utils/mocks";
 import { Transactions } from "@/components/Transactions";
 import { BottomSheet } from "@/components/BottomSheet";
-import BottomSheetComponent from "@gorhom/bottom-sheet";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { router } from "expo-router";
 import { useGoalRepository } from "@/storage/useGoalRepository";
+
+import type BottomSheetComponent from "@gorhom/bottom-sheet";
 
 const Index = () => {
 	const [goalName, setGoalName] = useState("");
