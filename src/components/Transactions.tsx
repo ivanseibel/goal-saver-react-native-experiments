@@ -7,9 +7,10 @@ type TransactionProp = Omit<TransactionDTO, "goal_id">;
 
 type ComponentProps = {
 	transactions: TransactionProp[];
+	canDelete?: boolean;
 };
 
-export const Transactions = ({ transactions }: ComponentProps) => {
+export const Transactions = ({ transactions, canDelete }: ComponentProps) => {
 	return (
 		<View className="flex-1">
 			<Text className="text-white text-base font-semiBold mt-8 mb-3">
@@ -30,7 +31,11 @@ export const Transactions = ({ transactions }: ComponentProps) => {
 					className=""
 				>
 					{transactions.map((transaction) => (
-						<Transaction key={transaction.id} {...transaction} />
+						<Transaction
+							key={transaction.id}
+							canDelete={canDelete}
+							{...transaction}
+						/>
 					))}
 				</ScrollView>
 			)}
