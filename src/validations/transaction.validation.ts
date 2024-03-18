@@ -1,7 +1,5 @@
 export const transactionValidation = {
 	amount: (value: string): string | null => {
-		console.log("value", value);
-
 		const trimmedValue = value.trim();
 		const numericValue = Number.parseFloat(trimmedValue);
 
