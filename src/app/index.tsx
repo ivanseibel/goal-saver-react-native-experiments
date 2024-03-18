@@ -14,6 +14,7 @@ import type BottomSheetComponent from "@gorhom/bottom-sheet";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { goalValidation } from "@/validations/goal.validation";
 import { useTransactionRepository } from "@/hooks/useTransactionRepository";
+import { useTransactions } from "@/contexts/transactions.context";
 
 const initialGoal = {
 	name: "",
@@ -22,14 +23,13 @@ const initialGoal = {
 
 const Index = () => {
 	const [goals, setGoals] = useState<GoalDTO[]>([]);
-	const [transactions, setTransactions] = useState<TransactionDTO[]>([]);
 
 	const bottomSheetRef = useRef<BottomSheetComponent>(null);
 	const handleBottomSheetOpen = () => bottomSheetRef.current?.expand();
 	const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
 
 	const { getGoals, createGoal } = useGoalRepository();
-	const { getLatestTransaction } = useTransactionRepository();
+	const { fetchLatestTransactions, latestTransactions } = useTransactions();
 	const { errors, handleChange, handleSubmit, values } = useFormValidation(
 		initialGoal,
 		goalValidation,
@@ -48,14 +48,7 @@ const Index = () => {
 		}
 	};
 
-	const fetchTransactions = () => {
-		const response = getLatestTransaction();
-		setTransactions(response);
-	};
-
 	const onSubmit = () => {
-		console.log("Form submitted", values);
-
 		createGoal(values.name, Number(values.amount));
 
 		Keyboard.dismiss();
@@ -66,7 +59,7 @@ const Index = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		fetchGoals();
-		fetchTransactions();
+		fetchLatestTransactions();
 	}, []);
 
 	return (
@@ -80,7 +73,7 @@ const Index = () => {
 					onAdd={handleBottomSheetOpen}
 				/>
 
-				<Transactions transactions={transactions} />
+				<Transactions transactions={latestTransactions} canDelete={false} />
 			</View>
 			<BottomSheet
 				ref={bottomSheetRef}
