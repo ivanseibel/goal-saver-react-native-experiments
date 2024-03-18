@@ -16,6 +16,7 @@ import { colors } from "@/styles/colors";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SQLiteProvider } from "expo-sqlite/next";
 import { databaseInit } from "@/storage/databaseInit";
+import { ContextAppProvider } from "@/contexts";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -40,7 +41,9 @@ const Layout = () => {
 			<SafeAreaView style={{ flex: 1, backgroundColor: colors.gray[600] }}>
 				<StatusBar style="light" />
 				<SQLiteProvider databaseName="mygoals.db" onInit={databaseInit}>
-					<Slot />
+					<ContextAppProvider>
+						<Slot />
+					</ContextAppProvider>
 				</SQLiteProvider>
 			</SafeAreaView>
 		</GestureHandlerRootView>
