@@ -5,7 +5,7 @@ import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { ProgressBar } from "@/components/ProgressBar";
 import { Transactions } from "@/components/Transactions";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TouchableOpacity, View, Text, Keyboard } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/styles/colors";
@@ -15,11 +15,9 @@ import type BottomSheetComponent from "@gorhom/bottom-sheet";
 import { useLocalSearchParams } from "expo-router";
 import { useGoalRepository } from "@/hooks/useGoalRepository";
 import { formatCurrencyCrossPlatform } from "@/utils/formatCurrency";
-import { useTransactionRepository } from "@/hooks/useTransactionRepository";
 import { transactionValidation } from "@/validations/transaction.validation";
 import { useFormValidation } from "@/hooks/useFormValidation";
-
-type TransactionType = "deposit" | "withdrawal";
+import { useTransactions } from "@/contexts/transactions.context";
 
 const initialTransaction = {
 	amount: "",
@@ -28,7 +26,6 @@ const initialTransaction = {
 
 const Details = () => {
 	const [goal, setGoal] = useState<GoalDTO | null>(null);
-	const [transactions, setTransactions] = useState<TransactionDTO[]>([]);
 
 	const routeParams = useLocalSearchParams();
 	const goalId = Number(routeParams.id);
@@ -38,8 +35,8 @@ const Details = () => {
 	const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
 
 	const { getGoal } = useGoalRepository();
-	const { createTransaction, getTransactions } = useTransactionRepository();
-
+	const { createTransaction, fetchTransactions, transactions } =
+		useTransactions();
 	const { errors, handleChange, handleSubmit, values } = useFormValidation(
 		initialTransaction,
 		transactionValidation,
@@ -50,55 +47,48 @@ const Details = () => {
 		setGoal(response);
 	};
 
-	const fetchTransactions = () => {
-		const response = getTransactions(goalId);
-		setTransactions(response);
-	};
-
-	const subtitle = useMemo(() => {
-		if (!goal) return "";
-
-		return `${formatCurrencyCrossPlatform(
-			goal.current,
-		)} of ${formatCurrencyCrossPlatform(goal.total)} saved`;
-	}, [goal]);
-
-	const percentage = useMemo(() => {
-		if (!goal) return 0;
-
-		return (goal.current / goal.total) * 100;
-	}, [goal]);
-
 	const onSubmit = () => {
-		console.log("Form submitted", values);
-
-		createTransaction(
+		createTransaction({
 			goalId,
-			Number(values.amount),
-			values.type as TransactionType,
-		);
+			amount: Number(values.amount),
+			type: values.type as TransactionType,
+		});
 
 		Keyboard.dismiss();
 		handleBottomSheetClose();
-		fetchTransactions();
+		fetchTransactions(goalId);
 	};
+
+	const percentage = useMemo(() => {
+		return ((goal?.current ?? 0) / (goal?.total ?? 1)) * 100;
+	}, [goal]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		fetchGoal();
-		fetchTransactions();
+		fetchTransactions(goalId);
 	}, [goalId]);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		fetchGoal();
+	}, [transactions]);
 
 	return (
 		<>
 			<View className="flex-1 bg-gray-600 pt-9 pb-4 px-8 gap-7 relative">
 				<BackButton />
 
-				<Header title={goal?.name ?? ""} subtitle={subtitle} />
+				<Header
+					title={goal?.name ?? ""}
+					subtitle={`${formatCurrencyCrossPlatform(
+						goal?.current ?? 0,
+					)} of ${formatCurrencyCrossPlatform(goal?.total ?? 0)} saved`}
+				/>
 
 				<ProgressBar percentage={percentage} />
 
-				<Transactions transactions={transactions} />
+				<Transactions transactions={transactions} canDelete />
 
 				<TouchableOpacity
 					className="absolute bottom-4 right-4 bg-green-500 rounded-full w-16 h-16 items-center justify-center"
@@ -126,6 +116,7 @@ const Details = () => {
 					<Input
 						placeholder="Amount"
 						onChangeText={(text) => handleChange("amount", text)}
+						keyboardType="decimal-pad"
 						value={values.amount}
 					/>
 
