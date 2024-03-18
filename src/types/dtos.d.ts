@@ -6,8 +6,16 @@ type GoalDTO = {
 };
 
 type TransactionDTO = {
-	id: string;
+	id: number;
 	amount: number;
 	goal_id: number;
 	created_at: string;
+};
+
+type TransactionType = "deposit" | "withdrawal";
+
+type CreateTransactionProps = {
+	goalId: number;
+	amount: number;
+	type: TransactionType;
 };
